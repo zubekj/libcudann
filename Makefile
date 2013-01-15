@@ -13,7 +13,7 @@ LIBDIR := /opt/cuda/lib64
 INCLUDEDIR := /opt/cuda-toolkit/include
 
 LIBS := -L$(LIBDIR) -lcuda -lcublas
-INCLUDES := -I$(INCLUDEDIR)
+INCLUDES := -I$(INCLUDEDIR) -I..
 
 CXX := g++
 NVCC := nvcc

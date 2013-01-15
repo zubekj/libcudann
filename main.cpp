@@ -9,19 +9,13 @@ Copyright (C) 2011 Luca Donati (lucadonati85@gmail.com)
 #include <math.h>
 #include <stdlib.h>
 
-#include "GAFeedForwardNN.h"
-#include "FeedForwardNN.h"
-#include "LearningSet.h"
-#include "FeedForwardNNTrainer.h"
-#include "ActivationFunctions.h"
+#include <libcudann/libcudann.h>
 
 using namespace std;
 
-
-
 int main(){
 
-	//TRAINING EXAMPLE
+/*	//TRAINING EXAMPLE
 
 	LearningSet trainingSet("mushroom.train");
 	LearningSet testSet("mushroom.test");
@@ -32,7 +26,9 @@ int main(){
 	int functs[]={1,1,1};
 	//declare the network with the number of layers
 	FeedForwardNN mynet(3,layers,functs);
-	
+
+        mynet.initWeights();
+
 	FeedForwardNNTrainer trainer;
 	trainer.selectNet(mynet);
 	trainer.selectTrainingSet(trainingSet);
@@ -67,13 +63,13 @@ int main(){
 
 	//mseT.saveToTxt("../mseTmushrooms.net");
 	//mseTT.saveToTxt("../mseTTmushrooms.net");
-	//cl.saveToTxt("../clmushrooms.net");
+	//cl.saveToTxt("../clmushrooms.net");*/
 
 
-/*	//EVOLUTION EXAMPLE
+	//EVOLUTION EXAMPLE
 
-	LearningSet trainingSet("../bcw.train");
-	LearningSet testSet("../bcw.test");
+	LearningSet trainingSet("mushroom.train");
+	LearningSet testSet("mushroom.test");
 
 	GAFeedForwardNN evo;
 
@@ -93,7 +89,7 @@ int main(){
 	//mutation probability
 	//number of layers
 	//max layer size
-	evo.init(30,100,ROULETTE_WHEEL,2,0.5,0.3,2,700);
+	evo.init(5,10,ROULETTE_WHEEL,2,0.5,0.3,1,50);
 
 	//training parameters:
 	//TRAIN_GPU - TRAIN_CPU
@@ -102,12 +98,11 @@ int main(){
 	//total epochs
 	//epochs between reports
 
-	float param[]={TRAIN_GPU,ALG_BATCH,0.00,800,1};
+	float param[]={TRAIN_GPU,ALG_BATCH,0.00,300,100};
 
 	evo.evolve(5,param,PRINT_MIN);
 
-	mybest.saveToTxt("../mybestbwc.net");
-*/
+	mybest.saveToTxt("mybestmushroom.net");
 
 /*	//USAGE EXAMPLE
 	//load a trained network from a file
