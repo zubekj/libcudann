@@ -1,9 +1,8 @@
 # Add source files here
-EXECUTABLE	:= execute
 # Cuda source files (compiled with cudacc)
 CUFILES		:= CudaActivationFunctions.cu CudaErrorFunctions.cu
 # C/C++ source files (compiled with gcc / c++)
-CCFILES		:= main.cpp FeedForwardNN.cpp LearningSet.cpp FeedForwardNNTrainer.cpp ActivationFunctions.cpp ErrorFunctions.cpp GAFeedForwardNN.cpp FloatChromosome.cpp
+CCFILES		:= FeedForwardNN.cpp LearningSet.cpp FeedForwardNNTrainer.cpp ActivationFunctions.cpp ErrorFunctions.cpp GAFeedForwardNN.cpp FloatChromosome.cpp
 
 USECUBLAS	:= 1
 
@@ -19,16 +18,25 @@ INCLUDES := -I$(INCLUDEDIR)
 CXX := g++
 NVCC := nvcc
 
+all: cudann_test libcudann.a libcudann.so
+
 %.cu.o : %.cu
-	$(NVCC) $(INCLUDES) -o $@ -c $<
+	$(NVCC) $(INCLUDES) -Xcompiler -fPIC -o $@ -c $<
 
 %.cpp.o : %.cpp
-	$(CXX) $(INCLUDES) -o $@ -c $<
+	$(CXX) $(INCLUDES) -fPIC -o $@ -c $<
 
-$(EXECUTABLE): $(OBJS)
-	$(CXX) $(OBJS) $(LIBS) -o $(EXECUTABLE)
+libcudann.a: $(OBJS)
+	ar -cvq libcudann.a $(OBJS)	
 
+libcudann.so: $(OBJS)
+	gcc -shared -Wl,-soname,libcudann.so \
+	       -o libcudann.so $(OBJS) $(LIBS)
+
+cudann_test: main.cpp.o libcudann.a
+	$(CXX) main.cpp.o libcudann.a $(LIBS) -o cudann_test
+	
 clean:
-	rm *.o $(EXECUTABLE)
+	rm *.o cudann_test libcudann.a libcudann.so
 
-.PHONY: clean
+.PHONY: all clean
