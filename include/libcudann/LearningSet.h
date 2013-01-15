@@ -41,7 +41,9 @@ public:
 	LearningSet(const char *);
 	// copy constructor
 	LearningSet(const LearningSet &);
-	// assignment operator
+        // create from array data
+        LearningSet(int, int, int, const float*, const float*);
+   	// assignment operator
 	LearningSet & operator = (const LearningSet &);
 	virtual ~LearningSet();
     float *getInputs() const;

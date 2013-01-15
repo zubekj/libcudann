@@ -82,6 +82,22 @@ LearningSet::LearningSet(const LearningSet & oldSet){
 	}
 }
 
+// create from array data
+LearningSet::LearningSet(int instances, int input_size, int output_size, const float *inputs, const float *outputs) {
+        numOfInstances = instances;
+        numOfInputsPerInstance = input_size;
+	numOfOutputsPerInstance = output_size;
+        
+        this->inputs = new float[numOfInstances*numOfInputsPerInstance];
+	this->outputs = new float[numOfInstances*numOfOutputsPerInstance];
+	for(int i=0;i<numOfInstances;i++){
+		for(int j=0;j<numOfInputsPerInstance;j++)
+			this->inputs[i*numOfInputsPerInstance+j]=inputs[i*numOfInputsPerInstance+j];
+		for(int j=0;j<numOfOutputsPerInstance;j++)
+			this->outputs[i*numOfOutputsPerInstance+j]=outputs[i*numOfOutputsPerInstance+j];
+	}
+}
+
 LearningSet & LearningSet::operator = (const LearningSet & oldSet){
 	if (this != &oldSet){ // protect against invalid self-assignment
 		// 1: allocate new memory and copy the elements
