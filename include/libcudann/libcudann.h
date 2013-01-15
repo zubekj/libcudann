@@ -9,4 +9,4 @@
 #include <libcudann/GAFeedForwardNN.h>
 #include <libcudann/LearningSet.h>
 
-#endif  /* __GIMP_BASE_H__ */
+#endif

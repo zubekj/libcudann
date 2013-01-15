@@ -1,19 +1,26 @@
-# Add source files here
+
+INSTALL_LIB_DIR := /usr/local/lib
+INSTALL_INCLUDE_DIR := /usr/local/include
+
+CUDA_LIB_DIR := /opt/cuda/lib64
+CUDA_INCLUDE_DIR := /opt/cuda-toolkit/include
+
+###
+
 # Cuda source files (compiled with cudacc)
 CUFILES		:= CudaActivationFunctions.cu CudaErrorFunctions.cu
 # C/C++ source files (compiled with gcc / c++)
-CCFILES		:= FeedForwardNN.cpp LearningSet.cpp FeedForwardNNTrainer.cpp ActivationFunctions.cpp ErrorFunctions.cpp GAFeedForwardNN.cpp FloatChromosome.cpp
-
-USECUBLAS	:= 1
+CCFILES		:= FeedForwardNN.cpp LearningSet.cpp FeedForwardNNTrainer.cpp \
+   	           ActivationFunctions.cpp ErrorFunctions.cpp GAFeedForwardNN.cpp \
+		   FloatChromosome.cpp
 
 OBJS := $(patsubst %.cpp,%.cpp.o,$(notdir $(CCFILES)))
 OBJS += $(patsubst %.cu,%.cu.o,$(notdir $(CUFILES)))
 
-LIBDIR := /opt/cuda/lib64
-INCLUDEDIR := /opt/cuda-toolkit/include
+INCLUDE_DIR = ../include
 
-LIBS := -L$(LIBDIR) -lcuda -lcublas
-INCLUDES := -I$(INCLUDEDIR) -I..
+LIBS := -L$(CUDA_LIB_DIR) -lcuda -lcublas
+INCLUDES := -I$(CUDA_INCLUDE_DIR) -I$(INCLUDE_DIR) -I$(INCLUDE_DIR)/libcudann
 
 CXX := g++
 NVCC := nvcc
@@ -38,5 +45,14 @@ cudann_test: main.cpp.o libcudann.a
 	
 clean:
 	rm *.o cudann_test libcudann.a libcudann.so
+
+install:
+	cp -t $(INSTALL_LIB_DIR) libcudann.a libcudann.so
+	cp -rt $(INSTALL_INCLUDE_DIR) $(INCLUDE_DIR)/* 
+
+uninstall:
+	rm $(INSTALL_LIB_DIR)/libcudann.a
+	rm $(INSTALL_LIB_DIR)/libcudann.so
+	rm -rf $(INSTALL_INCLUDE_DIR)/libcudann
 
 .PHONY: all clean

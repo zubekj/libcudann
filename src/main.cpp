@@ -15,7 +15,7 @@ using namespace std;
 
 int main(){
 
-/*	//TRAINING EXAMPLE
+	//TRAINING EXAMPLE
 
 	LearningSet trainingSet("mushroom.train");
 	LearningSet testSet("mushroom.test");
@@ -63,10 +63,10 @@ int main(){
 
 	//mseT.saveToTxt("../mseTmushrooms.net");
 	//mseTT.saveToTxt("../mseTTmushrooms.net");
-	//cl.saveToTxt("../clmushrooms.net");*/
+	//cl.saveToTxt("../clmushrooms.net");
 
 
-	//EVOLUTION EXAMPLE
+/*	//EVOLUTION EXAMPLE
 
 	LearningSet trainingSet("mushroom.train");
 	LearningSet testSet("mushroom.test");
@@ -102,7 +102,7 @@ int main(){
 
 	evo.evolve(5,param,PRINT_MIN);
 
-	mybest.saveToTxt("mybestmushroom.net");
+	mybest.saveToTxt("mybestmushroom.net"); /*
 
 /*	//USAGE EXAMPLE
 	//load a trained network from a file
