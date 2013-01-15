@@ -1,7 +1,7 @@
 import pycudann
 
-train_set = pycudann.load_learning_set('../src/mushroom.train')
-test_set = pycudann.load_learning_set('../src/mushroom.test')
+train_set = pycudann.load_learning_set('../datasets/mushroom.train')
+test_set = pycudann.load_learning_set('../datasets/mushroom.test')
 
 net = pycudann.FeedForwardNN([train_set.getNumOfInputsPerInstance(), 30,
                               train_set.getNumOfOutputsPerInstance()],

@@ -17,8 +17,8 @@ int main(){
 
 	//TRAINING EXAMPLE
 
-	LearningSet trainingSet("mushroom.train");
-	LearningSet testSet("mushroom.test");
+	LearningSet trainingSet("../datasets/mushroom.train");
+	LearningSet testSet("../datasets/mushroom.test");
 
 	//layer sizes
 	int layers[]={125,30,2};
