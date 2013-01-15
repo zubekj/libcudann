@@ -46,7 +46,7 @@ cudann_test: main.cpp.o libcudann.a
 clean:
 	rm *.o cudann_test libcudann.a libcudann.so
 
-install:
+install: libcudann.a libcudann.so
 	cp -t $(INSTALL_LIB_DIR) libcudann.a libcudann.so
 	cp -rt $(INSTALL_INCLUDE_DIR) $(INCLUDE_DIR)/* 
 
