@@ -2,8 +2,8 @@
 INSTALL_LIB_DIR := /usr/local/lib
 INSTALL_INCLUDE_DIR := /usr/local/include
 
-CUDA_LIB_DIR := /opt/cuda/lib64
-CUDA_INCLUDE_DIR := /opt/cuda-toolkit/include
+CUDA_LIB_DIR := /usr/local/cuda/lib64
+CUDA_INCLUDE_DIR := /usr/local/cuda/include
 
 ###
 
@@ -11,8 +11,8 @@ CUDA_INCLUDE_DIR := /opt/cuda-toolkit/include
 CUFILES		:= CudaActivationFunctions.cu CudaErrorFunctions.cu
 # C/C++ source files (compiled with gcc / c++)
 CCFILES		:= FeedForwardNN.cpp LearningSet.cpp FeedForwardNNTrainer.cpp \
-   	           ActivationFunctions.cpp ErrorFunctions.cpp GAFeedForwardNN.cpp \
-		   FloatChromosome.cpp
+             ActivationFunctions.cpp ErrorFunctions.cpp GAFeedForwardNN.cpp \
+             FloatChromosome.cpp
 
 OBJS := $(patsubst %.cpp,%.cpp.o,$(notdir $(CCFILES)))
 OBJS += $(patsubst %.cu,%.cu.o,$(notdir $(CUFILES)))

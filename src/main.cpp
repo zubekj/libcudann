@@ -27,7 +27,7 @@ int main(){
 	//declare the network with the number of layers
 	FeedForwardNN mynet(3,layers,functs);
 
-        mynet.initWeights();
+  mynet.initWeights();
 
 	FeedForwardNNTrainer trainer;
 	trainer.selectNet(mynet);
@@ -55,8 +55,8 @@ int main(){
 	
 	float param[]={TRAIN_GPU,ALG_BATCH,0.001,2000,500,0.7,0,SHUFFLE_ON,ERROR_TANH};
 	trainer.train(9,param);
-	 
-        printf("Accuracy: %f\n", mynet.classificatePerc(testSet));
+	
+  printf("Accuracy: %f\n", mynet.classificatePerc(testSet));
 	
 	mynet.saveToTxt("mynetmushrooms.net");
 

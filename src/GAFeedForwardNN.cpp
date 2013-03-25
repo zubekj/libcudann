@@ -193,7 +193,7 @@ void GAFeedForwardNN::evolve(const int n, const float * params, const int printt
 
 				trainer.selectBestMSETestNet(mseT);
 
-				float par[]={params[0],params[1],params[2],params[3],params[4],learningRate,0,SHUFFLE_ON,ERROR_TANH};
+				float par[]={params[0],params[1],params[2],params[3],params[4],learningRate,0,SHUFFLE_ON,ERROR_LINEAR};
 
 				//do the training of the net and evaluate is MSE error
 				medium+=trainer.train(9,par,print)/float(numberofevaluations);
