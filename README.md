@@ -3,8 +3,7 @@ libcudann
 
 A fork of libcudann -- artificial neural network implemented in CUDA.
 
-Original author: Luca Donati (lucadonati85@gmail.com)
-Original code: http://sourceforge.net/projects/libcudann/
+Original code by Luca Donati: http://sourceforge.net/projects/libcudann/
 
 The library supports standard multilayer perceptron architecture with
 an arbitrary number of layers. Activation function can be either
