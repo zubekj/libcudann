@@ -23,5 +23,17 @@ trainer.selectTestSet(test_set)
 # error_function: ERROR_TANH or ERROR_LINEAR
 # print_type: PRINT_OFF, PRINT_MIN or PRINT_ALL
 
-print(trainer.train(device=pycudann.TRAIN_CPU, print_type=pycudann.PRINT_ALL, max_epochs=1500,
+print(trainer.train(device=pycudann.TRAIN_GPU, print_type=pycudann.PRINT_ALL, max_epochs=1500,
                 epochs_between_reports=500, desired_error=0.002))
+
+
+# Alternative interface (in scikit-learn form):
+X = [[1,1],[1,0],[0,1],[0,0]]
+Y = [2,2,2,0]
+clf = pycudann.NeuralNetClassifier()
+clf.fit(X,Y)
+print clf.predict([1,1])
+print clf.predict_proba([1,1])
+print clf.predict_proba([1,0])
+print clf.predict_proba([0.5,0])
+print clf.predict_proba([0,0])
