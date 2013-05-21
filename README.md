@@ -8,7 +8,7 @@ Original code by Luca Donati: http://sourceforge.net/projects/libcudann/
 The library supports standard multilayer perceptron architecture with
 an arbitrary number of layers. Activation function can be either
 sigmoid or hyperbolic tangent. Network is trained through
-backpropagation algorithm (on-line or batch).
+batch backpropagation algorithm.
 
 CPU version of the algorithm is implemented for reference. Common
 speedups are between 100-200 times (depends on hardware).
