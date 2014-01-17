@@ -1,6 +1,8 @@
 from libc.stdlib cimport malloc, free
 cimport libcudann as cn
 
+import numpy as np
+
 SIGM = 1
 TANH = 2
 ERROR_TANH = cn.ERROR_TANH
@@ -21,11 +23,11 @@ def load_learning_set(str datafile):
    cdef char *c_datafile = b_datafile
    ls.thisptr = new cn.LearningSet(c_datafile)
    return ls
-   
+
 cdef class LearningSet(object):
 
    cdef cn.LearningSet *thisptr
-   
+
    def __cinit__(self, inputs, outputs):
       if len(inputs) != len(outputs):
          raise Exception()
@@ -40,7 +42,7 @@ cdef class LearningSet(object):
             raise Exception()
          for j in xrange(input_size):
             c_inputs[i*input_size+j] = inputs[i][j]
-      
+
       cdef float *c_outputs = <float*>malloc(sizeof(float)*output_size*instances)
       for i in xrange(instances):
          if len(outputs[i]) != output_size:
@@ -56,7 +58,7 @@ cdef class LearningSet(object):
    def __dealloc__(self):
       if self.thisptr is not NULL:
          del self.thisptr
-  
+
    def getInputs(self):
       cdef int i,j
       cdef float *inputs = self.thisptr.getInputs()
@@ -84,7 +86,7 @@ cdef class LearningSet(object):
 
    def getNumOfOutputsPerInstance(self):
       return self.thisptr.getNumOfOutputsPerInstance()
-   
+
    def getNumOfInstances(self):
       return self.thisptr.getNumOfInstances()
 
@@ -99,17 +101,17 @@ def load_neural_net(str datafile):
 cdef class FeedForwardNN(object):
 
    cdef cn.FeedForwardNN *thisptr
-   
+
    def __cinit__(self, layers, functions):
       if len(layers) != len(functions):
          raise Exception()
 
       cdef int i
-      
+
       cdef int *c_layers = <int*>malloc(sizeof(int)*len(layers))
       for i in xrange(len(layers)):
          c_layers[i] = layers[i]
-      
+
       cdef int *c_functions = <int*>malloc(sizeof(int)*len(layers))
       for i in xrange(len(functions)):
          c_functions[i] = functions[i]
@@ -126,7 +128,7 @@ cdef class FeedForwardNN(object):
       cdef int i
       cdef int *layers = self.thisptr.getLayersSize()
       cdef int layers_num = self.thisptr.getNumOfLayers()
-      
+
       cdef float *c_x = <float*>malloc(sizeof(float)*len(x))
       for i in xrange(len(x)):
          c_x[i] = x[i]
@@ -140,7 +142,7 @@ cdef class FeedForwardNN(object):
       y = []
       for i in xrange(layers[layers_num-1]):
          y.append(c_y[i])
-     
+
       free(c_x)
       free(c_y)
       return y
@@ -151,7 +153,7 @@ cdef class FeedForwardNN(object):
       self.thisptr.saveToTxt(c_filename)
 
 cdef class FeedForwardNNTrainer(object):
-   
+
    cdef cn.FeedForwardNNTrainer *thisptr
 
    def __cinit__(self):
@@ -160,7 +162,7 @@ cdef class FeedForwardNNTrainer(object):
    def __dealloc__(self):
       if self.thisptr is not NULL:
          del self.thisptr
-   
+
    def selectNet(self, FeedForwardNN net):
       self.thisptr.selectNet(net.thisptr[0])
 
@@ -192,3 +194,42 @@ cdef class FeedForwardNNTrainer(object):
                                           params["print_type"])
       free(c_params)
       return res
+
+class NeuralNetClassifier(object):
+
+  def __init__(self, hidden_layers=[10], activation_functions=[SIGM, SIGM, SIGM], **kwargs):
+     self.hidden_layers = hidden_layers
+     self.activation_functions = activation_functions
+     self.train_params = kwargs
+     self.is_symmetric_output = (self.activation_functions[-1] == TANH)
+
+  def fit(self, X, Y):
+     self.classes_ = list(np.unique(Y))
+
+     Yn = []
+     for y in Y:
+       yn = [0.0] * len(self.classes_)
+       yn[self.classes_.index(y)] = 1.0
+       Yn.append(yn)
+
+     self.ann = FeedForwardNN([len(X[0])] + self.hidden_layers + [len(self.classes_)],
+                                  self.activation_functions)
+     nn_data = LearningSet(X, Yn)
+     trainer = FeedForwardNNTrainer()
+     trainer.selectNet(self.ann)
+     trainer.selectTrainingSet(nn_data)
+     trainer.train(**self.train_params)
+
+  def predict_proba(self, X):
+     try:
+        len(X[0])
+     except TypeError:
+        X = [X]
+     if self.is_symmetric_output:
+        return np.array([[(r+1.0)/2.0 for r in self.ann.compute(x)] for x in X])
+     else:
+        return np.array([self.ann.compute(x) for x in X])
+
+  def predict(self, X):
+     probas = self.predict_proba(X)
+     return np.array([self.classes_[p.argmax()] for p in probas])
