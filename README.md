@@ -19,6 +19,9 @@ Compilation and installation:
     make
     sudo make install
 
+Before running make edit Makefile and set variables CUDA_LIB_DIR and
+CUDA_INCLUDE_DIR to point to correct paths.
+
 Compilation and installation of Python wrapper:
 
     cd python

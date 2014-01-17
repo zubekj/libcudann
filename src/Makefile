@@ -5,6 +5,10 @@ INSTALL_INCLUDE_DIR := /usr/local/include
 CUDA_LIB_DIR := /usr/local/cuda/lib64
 CUDA_INCLUDE_DIR := /usr/local/cuda/include
 
+# Default Arch intallation
+#CUDA_LIB_DIR := /opt/cuda/lib64
+#CUDA_INCLUDE_DIR := /opt/cuda/include
+
 ###
 
 # Cuda source files (compiled with cudacc)
@@ -19,7 +23,7 @@ OBJS += $(patsubst %.cu,%.cu.o,$(notdir $(CUFILES)))
 
 INCLUDE_DIR = ../include
 
-LIBS := -L$(CUDA_LIB_DIR) -lcuda -lcublas
+LIBS := -L$(CUDA_LIB_DIR) -lcuda -lcublas -lcudart
 INCLUDES := -I$(CUDA_INCLUDE_DIR) -I$(INCLUDE_DIR) -I$(INCLUDE_DIR)/libcudann
 
 CXX := g++
